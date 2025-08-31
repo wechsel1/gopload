@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gopload Learn — Maîtrise la publication multi-réseaux</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --glow: 0 20px 60px rgba(66, 153, 255, .35); }
+    .card { border: 1px solid rgba(255,255,255,.12); border-radius: 16px; backdrop-filter: blur(8px); background: rgba(255,255,255,.06); box-shadow: var(--glow); }
+    .glass { border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.08); backdrop-filter: blur(10px); }
+    .pill { border:1px solid rgba(255,255,255,.25); border-radius:9999px; padding:8px 14px; font-size:14px; background: rgba(255,255,255,.06); }
+    .pill.active { background: linear-gradient(135deg,#2563eb,#a855f7); color:#fff; border-color: transparent; }
+    .kpi { border:1px solid rgba(255,255,255,.18); border-radius: 16px; padding: 16px; background: rgba(255,255,255,.04); }
+    .hero-anim { background: radial-gradient(1200px 800px at 10% -10%, rgba(99,102,241,.35), transparent 60%), radial-gradient(900px 700px at 90% 10%, rgba(236,72,153,.35), transparent 60%), radial-gradient(1000px 900px at 50% 110%, rgba(59,130,246,.35), transparent 60%), #0b1220; }
+    @keyframes float { 0%{ transform: translateY(0) } 50%{ transform: translateY(-8px) } 100%{ transform: translateY(0) } }
+    .float { animation: float 6s ease-in-out infinite; }
+    .btn-primary { background: linear-gradient(135deg,#2563eb,#a855f7); box-shadow:0 10px 30px rgba(59,130,246,.35); }
+    .btn-primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
+    .title-gradient { background: linear-gradient(90deg,#93c5fd,#fda4af,#c4b5fd); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  </style>
+</head>
+<body class="text-white" style="background:#0b1220">
+  <header class="sticky top-0 z-40 bg-[#0b1220]/70 backdrop-blur border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-fuchsia-500 grid place-items-center font-bold">G</div>
+        <div class="font-semibold">Gopload</div>
+        <span class="ml-3 px-2 py-1 text-xs rounded-full bg-white/10 border border-white/15">Learn</span>
+      </div>
+      <nav class="hidden md:flex items-center gap-6 text-sm text-white/80">
+        <a href="#modules" class="hover:text-white">Modules</a>
+        <a href="#demo" class="hover:text-white">Démo</a>
+        <a href="#leaderboard" class="hover:text-white">Communauté</a>
+        <a href="#cta" class="hover:text-white">Commencer</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <select id="lang" class="bg-white/5 border border-white/15 rounded-lg px-2.5 py-1.5 text-sm">
+          <option value="fr">FR</option>
+          <option value="en">EN</option>
+        </select>
+        <a href="#" class="hidden sm:inline-block btn-primary px-4 py-2 rounded-xl text-sm font-semibold">Se connecter</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero-anim relative overflow-hidden">
+    <div class="absolute inset-0 opacity-40 pointer-events-none">
+      <svg class="w-full h-full" viewBox="0 0 800 600" fill="none">
+        <g opacity="0.45" stroke="url(#g1)" stroke-width="0.6">
+          <circle cx="400" cy="300" r="120" />
+          <circle cx="400" cy="300" r="180" />
+          <circle cx="400" cy="300" r="240" />
+          <circle cx="400" cy="300" r="300" />
+          <circle cx="400" cy="300" r="360" />
+        </g>
+        <defs>
+          <linearGradient id="g1">
+            <stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#f472b6"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 id="t-hero-title" class="text-4xl md:text-6xl font-extrabold leading-tight title-gradient">Apprends à dominer les réseaux en 1 clic</h1>
+        <p id="t-hero-sub" class="mt-4 text-white/80 text-lg">Gopload Learn transforme l’apprentissage en expérience. Modules courts, démos interactives, progression gamifiée.</p>
+        <div class="mt-6 flex gap-3">
+          <a href="#modules" id="t-cta-start" class="btn-primary px-5 py-3 rounded-2xl font-semibold">Commencer</a>
+          <a href="#demo" id="t-cta-watch" class="px-5 py-3 rounded-2xl font-semibold border border-white/20 hover:bg-white/10">Voir la démo</a>
+        </div>
+        <div class="mt-8 grid grid-cols-3 gap-3 text-center">
+          <div class="glass rounded-2xl p-4"><div class="text-2xl font-bold" id="counter-views">0</div><div class="text-xs text-white/70" id="t-hero-kpi1">vues simulées</div></div>
+          <div class="glass rounded-2xl p-4"><div class="text-2xl font-bold" id="counter-hours">0</div><div class="text-xs text-white/70" id="t-hero-kpi2">heures gagnées</div></div>
+          <div class="glass rounded-2xl p-4"><div class="text-2xl font-bold" id="counter-learners">0</div><div class="text-xs text-white/70" id="t-hero-kpi3">apprenants actifs</div></div>
+        </div>
+      </div>
+      <div class="float">
+        <div class="card p-3">
+          <img alt="Dashboard preview" class="rounded-xl w-full" src="https://images.unsplash.com/photo-1551281044-8d8d6083a6b0?q=80&w=1200&auto=format&fit=crop"/>
+          <div class="p-4">
+            <div class="text-sm text-white/80">Aperçu du Dashboard</div>
+            <div class="mt-2 text-white/70 text-sm">Crée, publie et mesure — en un seul endroit.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="modules" class="relative">
+    <div class="max-w-7xl mx-auto px-4 py-14">
+      <div class="flex items-center justify-between gap-6 flex-wrap">
+        <h2 id="t-modules-title" class="text-2xl md:text-3xl font-bold">Ton parcours d’apprentissage</h2>
+        <div class="w-full md:w-80">
+          <div class="text-sm text-white/70 mb-1" id="t-progress">Progression</div>
+          <div class="h-3 rounded-full bg-white/10 overflow-hidden">
+            <div id="progress-bar" class="h-full w-0 bg-gradient-to-r from-blue-500 to-fuchsia-500"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 grid-auto">
+        <div class="card p-5 hover:scale-[1.01] transition" data-module="create">
+          <div class="text-sm text-white/70">Module 01</div>
+          <h3 class="text-xl font-semibold mt-1" id="t-m1">Créer un post parfait</h3>
+          <p class="text-white/70 text-sm mt-2" id="t-m1-desc">Upload, titres, descriptions et hashtags qui performent.</p>
+          <button class="mt-4 pill" onclick="complete('create')" id="t-start">Commencer</button>
+        </div>
+
+        <div class="card p-5 hover:scale-[1.01] transition" data-module="analyze">
+          <div class="text-sm text-white/70">Module 02</div>
+          <h3 class="text-xl font-semibold mt-1" id="t-m2">Analyser les performances</h3>
+          <p class="text-white/70 text-sm mt-2" id="t-m2-desc">Comprends vues, engagement et tendances par réseau.</p>
+          <button class="mt-4 pill" onclick="complete('analyze')" id="t-start2">Commencer</button>
+        </div>
+
+        <div class="card p-5 hover:scale-[1.01] transition" data-module="optimize">
+          <div class="text-sm text-white/70">Module 03</div>
+          <h3 class="text-xl font-semibold mt-1" id="t-m3">Optimiser avec l’IA</h3>
+          <p class="text-white/70 text-sm mt-2" id="t-m3-desc">Génère hooks, titres et hashtags multilingues.</p>
+          <button class="mt-4 pill" onclick="complete('optimize')" id="t-start3">Commencer</button>
+        </div>
+
+        <div class="card p-5 hover:scale-[1.01] transition" data-module="monetize">
+          <div class="text-sm text-white/70">Module 04</div>
+          <h3 class="text-xl font-semibold mt-1" id="t-m4">Monétiser ton audience</h3>
+          <p class="text-white/70 text-sm mt-2" id="t-m4-desc">Rapports, sponsors et boosters publicitaires.</p>
+          <button class="mt-4 pill" onclick="complete('monetize')" id="t-start4">Commencer</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo" class="relative">
+    <div class="max-w-7xl mx-auto px-4 py-14">
+      <div class="grid lg:grid-cols-2 gap-8 items-start">
+        <div class="card p-6">
+          <h3 class="text-xl font-semibold" id="t-demo-title">Démo interactive</h3>
+          <p class="text-white/70 text-sm mt-2" id="t-demo-desc">Simule un post et vois l’impact potentiel.</p>
+          <div class="mt-5 grid gap-3">
+            <input id="demo-title" class="w-full rounded-xl bg-white/5 border border-white/15 px-3 py-2.5" placeholder="Titre de la vidéo">
+            <textarea id="demo-desc" rows="3" class="w-full rounded-xl bg-white/5 border border-white/15 px-3 py-2.5" placeholder="Description…"></textarea>
+            <input id="demo-tags" class="w-full rounded-xl bg-white/5 border border-white/15 px-3 py-2.5" placeholder="#shorts #tiktok #reels">
+            <div class="flex flex-wrap gap-2" id="networkPills"></div>
+            <div class="flex gap-3 mt-2">
+              <button class="btn-primary px-4 py-2 rounded-xl font-semibold" onclick="simulate()" id="t-simulate">Simuler</button>
+              <button class="px-4 py-2 rounded-xl border border-white/20 hover:bg-white/10" onclick="resetDemo()" id="t-reset">Réinitialiser</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <h3 class="text-xl font-semibold" id="t-demo-out">Résultats potentiels</h3>
+          <div class="mt-5 grid sm:grid-cols-3 gap-3">
+            <div class="kpi"><div class="text-sm text-white/70" id="t-kpi-views">Vues</div><div id="r-views" class="text-2xl font-bold">—</div></div>
+            <div class="kpi"><div class="text-sm text-white/70" id="t-kpi-likes">Likes</div><div id="r-likes" class="text-2xl font-bold">—</div></div>
+            <div class="kpi"><div class="text-sm text-white/70" id="t-kpi-comments">Commentaires</div><div id="r-comments" class="text-2xl font-bold">—</div></div>
+          </div>
+          <div class="mt-6 text-sm text-white/70" id="result-note">Conseil : ajoute 3–4 hashtags tendances et une accroche forte les 3 premières secondes.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="leaderboard" class="relative">
+    <div class="max-w-7xl mx-auto px-4 py-14">
+      <div class="flex items-center justify-between">
+        <h3 class="text-2xl font-bold" id="t-community">Communauté & classement</h3>
+        <div class="text-sm text-white/70" id="t-live">En direct</div>
+      </div>
+      <div class="mt-6 grid lg:grid-cols-2 gap-6">
+        <div class="card p-6">
+          <ul id="feed" class="space-y-3 text-sm text-white/85"></ul>
+        </div>
+        <div class="card p-6">
+          <div class="space-y-4" id="board"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta" class="relative">
+    <div class="max-w-7xl mx-auto px-4 py-16 text-center">
+      <h3 class="text-3xl md:text-4xl font-extrabold title-gradient" id="t-cta-title">Prêt à lancer tes posts qui cartonnent ?</h3>
+      <p class="text-white/80 mt-3" id="t-cta-sub">Crée, publie et analyse depuis un seul endroit — c’est le moment.</p>
+      <div class="mt-6">
+        <a href="#" class="btn-primary px-6 py-3 rounded-2xl font-semibold">Démarrer Gopload</a>
+      </div>
+    </div>
+  </section>
+
+<script>
+const I18N = {
+  fr: {
+    heroTitle: "Apprends à dominer les réseaux en 1 clic",
+    heroSub: "Gopload Learn transforme l’apprentissage en expérience. Modules courts, démos interactives, progression gamifiée.",
+    heroKPI1: "vues simulées", heroKPI2: "heures gagnées", heroKPI3: "apprenants actifs",
+    ctaStart: "Commencer", ctaWatch: "Voir la démo",
+    modulesTitle: "Ton parcours d’apprentissage", progress: "Progression",
+    m1: "Créer un post parfait", m1d: "Upload, titres, descriptions et hashtags qui performent.",
+    m2: "Analyser les performances", m2d: "Comprends vues, engagement et tendances par réseau.",
+    m3: "Optimiser avec l’IA", m3d: "Génère hooks, titres et hashtags multilingues.",
+    m4: "Monétiser ton audience", m4d: "Rapports, sponsors et boosters publicitaires.",
+    start: "Commencer",
+    demoTitle: "Démo interactive", demoDesc: "Simule un post et vois l’impact potentiel.", demoOut: "Résultats potentiels",
+    simulate: "Simuler", reset: "Réinitialiser",
+    kViews: "Vues", kLikes: "Likes", kComments: "Commentaires",
+    tip: "Conseil : ajoute 3–4 hashtags tendances et une accroche forte les 3 premières secondes.",
+    community: "Communauté & classement", live: "En direct",
+    ctaTitle: "Prêt à lancer tes posts qui cartonnent ?", ctaSub: "Crée, publie et analyse depuis un seul endroit — c’est le moment."
+  },
+  en: {
+    heroTitle: "Master every network with one click",
+    heroSub: "Gopload Learn turns learning into an experience. Short modules, interactive demos, gamified progress.",
+    heroKPI1: "simulated views", heroKPI2: "hours saved", heroKPI3: "active learners",
+    ctaStart: "Get started", ctaWatch: "Watch demo",
+    modulesTitle: "Your learning path", progress: "Progress",
+    m1: "Create a perfect post", m1d: "Upload, titles, descriptions and high-performing hashtags.",
+    m2: "Analyze performance", m2d: "Understand views, engagement and trends per network.",
+    m3: "Optimize with AI", m3d: "Generate hooks, titles and multilingual hashtags.",
+    m4: "Monetize your audience", m4d: "Reports, sponsors and ad boosters.",
+    start: "Start",
+    demoTitle: "Interactive demo", demoDesc: "Simulate a post and preview potential impact.", demoOut: "Potential results",
+    simulate: "Simulate", reset: "Reset",
+    kViews: "Views", kLikes: "Likes", kComments: "Comments",
+    tip: "Tip: add 3–4 trending hashtags and a strong hook in the first 3 seconds.",
+    community: "Community & leaderboard", live: "Live",
+    ctaTitle: "Ready to launch posts that win?", ctaSub: "Create, publish and analyze in one place — it’s time."
+  }
+};
+
+const NETWORKS = [
+  { name: "TikTok", slug: "tiktok", icon: "🎵" },
+  { name: "YouTube Shorts", slug: "youtube-shorts", icon: "▶️" },
+  { name: "X (Twitter)", slug: "x", icon: "𝕏" },
+  { name: "Instagram Reels", slug: "instagram-reels", icon: "📸" },
+  { name: "Facebook", slug: "facebook", icon: "f" },
+  { name: "WhatsApp", slug: "whatsapp", icon: "💬" },
+  { name: "Reddit", slug: "reddit", icon: "👽" },
+  { name: "WeChat", slug: "wechat", icon: "🟢" },
+  { name: "Douyin", slug: "douyin", icon: "🎵" },
+  { name: "Zhihu", slug: "zhihu", icon: "知" },
+  { name: "QQ", slug: "qq", icon: "Q" },
+  { name: "Youku", slug: "youku", icon: "优" },
+];
+let selected = new Set(["tiktok","youtube-shorts","x"]);
+
+function animateCount(id, to, duration=1200){
+  const el=document.getElementById(id); const start=0; const t0=performance.now();
+  function step(ts){ const p=Math.min(1,(ts-t0)/duration); el.textContent=Math.floor(start+(to-start)*p).toLocaleString(); if(p<1) requestAnimationFrame(step); }
+  requestAnimationFrame(step);
+}
+
+const state = { create:false, analyze:false, optimize:false, monetize:false };
+function complete(key){
+  state[key]=true;
+  const done = Object.values(state).filter(Boolean).length;
+  const pct = Math.round((done/4)*100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  const card = document.querySelector(`[data-module="${key}"]`);
+  if(card && !card.querySelector('.badge')){
+    const b = document.createElement('div'); b.className='badge mt-3 inline-block text-xs px-2 py-1 rounded bg-emerald-500/20 border border-emerald-400/40 text-emerald-200'; b.textContent='✓ Terminé';
+    card.appendChild(b);
+  }
+}
+
+function renderPills(){
+  const wrap = document.getElementById('networkPills'); wrap.innerHTML='';
+  NETWORKS.forEach(n=>{
+    const b=document.createElement('button'); b.className='pill '+(selected.has(n.slug)?'active':''); b.textContent=`${n.icon} ${n.name}`;
+    b.onclick=()=>{ selected.has(n.slug)?selected.delete(n.slug):selected.add(n.slug); renderPills(); };
+    wrap.appendChild(b);
+  });
+}
+function simulate(){
+  const base = 500 + Math.floor(Math.random()*1500);
+  const mult = 1 + selected.size * 0.25;
+  const views = Math.round(base*mult);
+  const likes = Math.round(views * (0.12 + Math.random()*0.08));
+  const comments = Math.round(views * (0.02 + Math.random()*0.02));
+  document.getElementById('r-views').textContent = views.toLocaleString();
+  document.getElementById('r-likes').textContent = likes.toLocaleString();
+  document.getElementById('r-comments').textContent = comments.toLocaleString();
+}
+function resetDemo(){
+  document.getElementById('demo-title').value=''; document.getElementById('demo-desc').value=''; document.getElementById('demo-tags').value='';
+  document.getElementById('r-views').textContent='—'; document.getElementById('r-likes').textContent='—'; document.getElementById('r-comments').textContent='—';
+  selected = new Set(["tiktok","youtube-shorts","x"]); renderPills();
+}
+
+const names = ["Sarah","Mehdi","Lea","Yan","Amira","Theo","Mina","Lucas","Omar","Zoé"];
+function rnd(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function addFeedItem(){
+  const feed = document.getElementById('feed');
+  const who = rnd(names);
+  const actions = ["a terminé","a débloqué","a atteint","a publié", "a généré"];
+  const modules = ["Créer un post","Analyser","Optimiser (IA)","Monétiser"];
+  const msg = `${who} ${rnd(actions)} « ${rnd(modules)} »`;
+  const li = document.createElement('li'); li.className='glass rounded-xl px-4 py-3'; li.textContent=msg;
+  feed.prepend(li);
+  if(feed.children.length>8) feed.removeChild(feed.lastChild);
+}
+
+function renderBoard(){
+  const board = document.getElementById('board'); board.innerHTML='';
+  const top = Array.from({length:5}).map((_,i)=>({ name: rnd(names), score: Math.round(60+Math.random()*40) }))
+    .sort((a,b)=>b.score-a.score);
+  top.forEach((u,i)=>{
+    const row = document.createElement('div'); row.innerHTML = `
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-white/10 grid place-items-center">${i+1}</div>
+          <div class="font-medium">${u.name}</div>
+        </div>
+        <div class="text-sm">${u.score}%</div>
+      </div>
+      <div class="h-2 mt-2 rounded-full bg-white/10 overflow-hidden">
+        <div class="h-full bg-gradient-to-r from-emerald-400 to-blue-500" style="width:${u.score}%"></div>
+      </div>`;
+    row.className='glass rounded-xl p-4';
+    board.appendChild(row);
+  });
+}
+
+function applyLang(lang){
+  const t = I18N[lang];
+  document.getElementById('t-hero-title').textContent=t.heroTitle;
+  document.getElementById('t-hero-sub').textContent=t.heroSub;
+  document.getElementById('t-hero-kpi1').textContent=t.heroKPI1;
+  document.getElementById('t-hero-kpi2').textContent=t.heroKPI2;
+  document.getElementById('t-hero-kpi3').textContent=t.heroKPI3;
+  document.getElementById('t-cta-start').textContent=t.ctaStart;
+  document.getElementById('t-cta-watch').textContent=t.ctaWatch;
+  document.getElementById('t-modules-title').textContent=t.modulesTitle;
+  document.getElementById('t-progress').textContent=t.progress;
+  document.getElementById('t-m1').textContent=t.m1; document.getElementById('t-m1-desc').textContent=t.m1d;
+  document.getElementById('t-m2').textContent=t.m2; document.getElementById('t-m2-desc').textContent=t.m2d;
+  document.getElementById('t-m3').textContent=t.m3; document.getElementById('t-m3-desc').textContent=t.m3d;
+  document.getElementById('t-m4').textContent=t.m4; document.getElementById('t-m4-desc').textContent=t.m4d;
+  document.getElementById('t-start').textContent=t.start; document.getElementById('t-start2').textContent=t.start; document.getElementById('t-start3').textContent=t.start; document.getElementById('t-start4').textContent=t.start;
+  document.getElementById('t-demo-title').textContent=t.demoTitle; document.getElementById('t-demo-desc').textContent=t.demoDesc; document.getElementById('t-demo-out').textContent=t.demoOut;
+  document.getElementById('t-simulate').textContent=t.simulate; document.getElementById('t-reset').textContent=t.reset;
+  document.getElementById('t-kpi-views').textContent=t.kViews; document.getElementById('t-kpi-likes').textContent=t.kLikes; document.getElementById('t-kpi-comments').textContent=t.kComments;
+  document.getElementById('result-note').textContent=t.tip;
+  document.getElementById('t-community').textContent=t.community; document.getElementById('t-live').textContent=t.live;
+  document.getElementById('t-cta-title').textContent=t.ctaTitle; document.getElementById('t-cta-sub').textContent=t.ctaSub;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderPills();
+  animateCount('counter-views', 128400); animateCount('counter-hours', 864); animateCount('counter-learners', 3270);
+  addFeedItem(); renderBoard(); setInterval(addFeedItem, 2500); setInterval(renderBoard, 8000);
+  const langSel=document.getElementById('lang'); langSel.value='fr'; applyLang('fr');
+  langSel.addEventListener('change', e=>applyLang(e.target.value));
+});
+</script>
+</body>
+</html>
